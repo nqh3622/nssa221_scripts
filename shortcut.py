@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 
+#Nathaniel Hartley
+#10/20/25
+
 import os
 import pathlib
 
-def clear_screen():
-    os.system('clear' if os.name == 'posix' else 'cls')
+#function creates prints the menu out to the screen for the user to select options
 
 def print_menu():
     print("\nSymbolic Link Manager")
@@ -13,6 +15,11 @@ def print_menu():
     print("2. Delete a symbolic link")
     print("3. Generate a symbolic link report")
     print("4. Quit")
+
+#function creates a symbolic link by first prompting the user for the path of the file they wish to link
+#then, if the path is a valid file, the user inputs the name of the symblic link and the path for the link is saved
+#error handling is used to determine if a symbolic link with the same name already exists 
+#if not, a new symblic link is created with the provided source path and the link path
 
 def create_symlink():
     source_path = input("\nEnter the full path of the file you want to link: ").strip()
@@ -32,6 +39,11 @@ def create_symlink():
         print("Error: The file does not exist. Please check the path and try again.")
         return
 
+#function is used to delete a specified symbolic link. 
+#The user is prompted to enter the name of the symblic link on their desktop that they would like to delete
+#this name is concatonated onto the user's desktop path and this supposed file is verified to both exist and be a symbolic link
+#if both of those are true, the link is undone but if one or more is false, error messages are output
+
 def delete_symlink():
     desktop_path = pathlib.Path.home() / 'Desktop'
     link_name = input("\nEnter the name of the symbolic link to delete: ").strip()
@@ -50,6 +62,11 @@ def delete_symlink():
         if not link_path.is_symlink():
             print("Error: This is not a symbolic link.")
             return
+
+#function used to generate a report on the total amount of symbolic links existing on a particular user's desktop
+#a for loop goes through each item on the dekstop to determine if any are symbolic links
+#if one or more symbolic links exist, the total number is output to the user. Otherwise, an appropriate message is output
+#additionally, a count of the total amount of symbolic links in the user's home directory are also displayed
 
 def generate_report():
     home_dir = pathlib.Path.home()
@@ -81,11 +98,12 @@ def generate_report():
 
     print("\nTotal symbolic links in home directory: " + str(symlink_count))
 
+#main method which allows the user to select menu options.
+
 def main():
     while True:
         print_menu()
         choice = input("\nSelect an option [1-4]: ").strip()
-
         if choice == '1':
             create_symlink()
         elif choice == '2':
